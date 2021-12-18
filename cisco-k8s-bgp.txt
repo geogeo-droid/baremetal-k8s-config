@@ -1,0 +1,95 @@
+router bgp 65000
+ bgp router-id 1.0.0.0
+ bgp log-neighbor-changes
+ !
+ address-family ipv4 vrf k8s-calico
+  bgp router-id 1.0.0.2
+  redistribute connected
+
+  neighbor 172.16.2.3 remote-as 65002
+  neighbor 172.16.2.3 ebgp-multihop 32
+  neighbor 172.16.2.3 update-source Loopback2
+  neighbor 172.16.2.3 activate
+  neighbor 172.16.2.3 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.4 remote-as 65002
+  neighbor 172.16.2.4 ebgp-multihop 32
+  neighbor 172.16.2.4 update-source Loopback2
+  neighbor 172.16.2.4 activate
+  neighbor 172.16.2.4 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.5 remote-as 65002
+  neighbor 172.16.2.5 ebgp-multihop 32
+  neighbor 172.16.2.5 update-source Loopback2
+  neighbor 172.16.2.5 activate
+  neighbor 172.16.2.5 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.8 remote-as 65002
+  neighbor 172.16.2.8 ebgp-multihop 32
+  neighbor 172.16.2.8 update-source Loopback2
+  neighbor 172.16.2.8 activate
+  neighbor 172.16.2.8 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.9 remote-as 65002
+  neighbor 172.16.2.9 ebgp-multihop 32
+  neighbor 172.16.2.9 update-source Loopback2
+  neighbor 172.16.2.9 activate
+  neighbor 172.16.2.9 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.10 remote-as 65002
+  neighbor 172.16.2.10 ebgp-multihop 32
+  neighbor 172.16.2.10 update-source Loopback2
+  neighbor 172.16.2.10 activate
+  neighbor 172.16.2.10 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.11 remote-as 65002
+  neighbor 172.16.2.11 ebgp-multihop 32
+  neighbor 172.16.2.11 update-source Loopback2
+  neighbor 172.16.2.11 activate
+  neighbor 172.16.2.11 prefix-list deny-all-routes out
+
+ exit-address-family
+ !
+ address-family ipv4 vrf k8s-metallb
+  bgp router-id 1.0.0.1
+  redistribute connected
+
+  neighbor 172.16.2.3 remote-as 65001
+  neighbor 172.16.2.3 update-source Vlan1
+  neighbor 172.16.2.3 activate
+  neighbor 172.16.2.3 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.4 remote-as 65001
+  neighbor 172.16.2.4 update-source Vlan1
+  neighbor 172.16.2.4 activate
+  neighbor 172.16.2.4 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.5 remote-as 65001
+  neighbor 172.16.2.5 update-source Vlan1
+  neighbor 172.16.2.5 activate
+  neighbor 172.16.2.5 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.8 remote-as 65001
+  neighbor 172.16.2.8 update-source Vlan1
+  neighbor 172.16.2.8 activate
+  neighbor 172.16.2.8 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.9 remote-as 65001
+  neighbor 172.16.2.9 update-source Vlan1
+  neighbor 172.16.2.9 activate
+  neighbor 172.16.2.9 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.10 remote-as 65001
+  neighbor 172.16.2.10 update-source Vlan1
+  neighbor 172.16.2.10 activate
+  neighbor 172.16.2.10 prefix-list deny-all-routes out
+
+  neighbor 172.16.2.11 remote-as 65001
+  neighbor 172.16.2.11 update-source Vlan1
+  neighbor 172.16.2.11 activate
+  neighbor 172.16.2.11 prefix-list deny-all-routes out
+
+  maximum-paths 4
+ exit-address-family
+!
+ip prefix-list deny-all-routes seq 5 deny 0.0.0.0/0 le 32

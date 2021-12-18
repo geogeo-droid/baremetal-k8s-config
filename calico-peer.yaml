@@ -1,0 +1,8 @@
+apiVersion: projectcalico.org/v3
+kind: BGPPeer
+metadata:
+  creationTimestamp: null
+  name: bgppeer-csr1000v
+spec:
+  asNumber: 65000
+  peerIP: 1.1.1.2

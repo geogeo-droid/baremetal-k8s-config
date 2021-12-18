@@ -1,0 +1,3 @@
+cisco: 65000
+metallb: 65001
+calico: 65002
