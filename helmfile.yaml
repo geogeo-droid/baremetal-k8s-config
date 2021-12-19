@@ -1,0 +1,24 @@
+repositories:
+  - name: stable
+    url: https://charts.helm.sh/stable
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+
+releases:
+  - name: nginx-ingress
+    namespace: kube-system
+    chart: ingress-nginx/ingress-nginx
+
+# --set rbac.create=false --set apiService.create=true --set extraArgs.kubelet-insecure-tls=true
+  # - name: metrics-server-system
+  #   namespace: kube-system
+  #   chart: bitnami/metrics-server
+  #   set:
+  #     - name: rbac.create
+  #       value: "false"
+  #     - name: apiService.create
+  #       value: "true"
+  #     - name: extraArgs.kubelet-insecure-tls
+  #       value: "true"
