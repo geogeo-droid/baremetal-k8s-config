@@ -3717,6 +3717,8 @@ spec:
       labels:
         k8s-app: calico-node
     spec:
+      imagePullSecrets:
+        - name: docker-config
       nodeSelector:
         kubernetes.io/os: linux
       hostNetwork: true
@@ -4033,6 +4035,8 @@ spec:
       labels:
         k8s-app: calico-kube-controllers
     spec:
+      imagePullSecrets:
+        - name: docker-config
       nodeSelector:
         kubernetes.io/os: linux
       tolerations:
