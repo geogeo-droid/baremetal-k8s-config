@@ -10,8 +10,8 @@
 helm install metallb metallb/metallb -f metallb-values.yaml
 kubectl  create secret generic docker-config --from-file=.dockerconfigjson=config.json --type=kubernetes.io/dockerconfigjson
 kubectl apply -f calico.yaml-3.20
-calicoctl create -f calico-bgp.yaml
-calicoctl create -f calico-peer.yaml
+calicoctl create -f calico-bgp.yaml --allow-version-mismatch
+calicoctl create -f calico-peer.yaml --allow-version-mismatch
 
 helmfile sync
 

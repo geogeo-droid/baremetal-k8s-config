@@ -1,3 +1,70 @@
+ip vrf k8s-calico
+ rd 65000:2
+ route-target export 65000:2
+ route-target import 65000:2
+ route-target import 65000:1
+!
+ip vrf k8s-metallb
+ rd 65000:1
+ route-target export 65000:1
+ route-target import 65000:2
+ route-target import 65000:1
+!
+interface Loopback0
+ ip address 1.1.1.0 255.255.255.255
+!
+interface Loopback2
+ ip vrf forwarding k8s-calico
+ ip address 1.1.1.2 255.255.255.255
+!
+interface GigabitEthernet2
+ ip vrf forwarding k8s-metallb
+ ip address 10.0.0.254 255.255.255.0
+!
+interface GigabitEthernet3
+ ip vrf forwarding k8s-calico
+ ip address 10.0.1.254 255.255.255.0
+!
+
+interface Loopback0
+ ip address 1.1.1.0 255.255.255.255
+!
+interface Loopback2
+ ip vrf forwarding k8s-calico
+ ip address 1.1.1.2 255.255.255.255
+!
+interface FastEthernet1/0/2
+ no switchport
+ ip vrf forwarding k8s-calico
+ ip address 192.168.110.1 255.255.255.0
+!
+interface FastEthernet1/0/13
+ no switchport
+ ip vrf forwarding k8s-calico
+ ip address 192.168.120.1 255.255.255.0
+!
+interface Vlan1
+ ip vrf forwarding k8s-metallb
+ ip address 172.16.2.254 255.255.255.0
+!
+router eigrp 1
+ !
+ address-family ipv4 vrf k8s-calico
+  network 172.16.0.0
+  network 192.168.110.0
+  network 192.168.120.0
+  autonomous-system 10
+ exit-address-family
+ !
+ address-family ipv4 vrf k8s-metallb
+  network 172.16.0.0
+  network 192.168.110.0
+  network 192.168.120.0
+  autonomous-system 10
+ exit-address-family
+ network 192.168.110.0
+ network 192.168.120.0
+!
 router bgp 65000
  bgp router-id 1.0.0.0
  bgp log-neighbor-changes
@@ -93,3 +160,16 @@ router bgp 65000
  exit-address-family
 !
 ip prefix-list deny-all-routes seq 5 deny 0.0.0.0/0 le 32
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 192.168.110.2
+ip route 192.168.160.0 255.255.255.0 192.168.120.2
+ip route 192.168.170.0 255.255.255.0 192.168.120.2
+ip route vrf k8s-calico 0.0.0.0 0.0.0.0 192.168.110.2
+ip route vrf k8s-calico 192.168.160.0 255.255.255.0 192.168.120.2
+ip route vrf k8s-calico 192.168.170.0 255.255.255.0 192.168.120.2
+ip route vrf k8s-metallb 0.0.0.0 0.0.0.0 192.168.110.2
+ip route vrf k8s-metallb 192.168.160.0 255.255.255.0 192.168.120.2
+ip route vrf k8s-metallb 192.168.170.0 255.255.255.0 192.168.120.2
+ip http server
+ip http secure-server
